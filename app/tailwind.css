@@ -4,9 +4,81 @@
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
+  /* @apply bg-white dark:bg-gray-950; */
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
+  }
+
+  .scroller {
+    --scrollbar-color-thumb: theme('colors.slate.800');
+    --scrollbar-color-track: transparent;
+    --scrollbar-width: thin;
+    --scrollbar-width-legacy: 10px;
+  }
+
+  /* Modern browsers with `scrollbar-*` support */
+  @supports (scrollbar-width: auto) {
+    .scroller {
+      scrollbar-color: var(--scrollbar-color-thumb) var(--scrollbar-color-track);
+      scrollbar-width: var(--scrollbar-width);
+    }
+  }
+
+  /* Legacy browsers with `::-webkit-scrollbar-*` support */
+  @supports selector(::-webkit-scrollbar) {
+    .scroller::-webkit-scrollbar-thumb {
+      background: red
+    }
+
+    .scroller::-webkit-scrollbar-track {
+      background: var(--scrollbar-color-track);
+    }
+
+    .scroller::-webkit-scrollbar {
+      max-width: var(--scrollbar-width-legacy);
+      max-height: var(--scrollbar-width-legacy);
+    }
+  }
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-image: url('./background/rivalry-logo.png');
+  background-size: 200px;
+  background-repeat: space;
+  /* transform: rotate(-45deg); */
+  opacity: 0.5;
+}
+
+.ranking {
+  ol {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    counter-reset: list-number;
+  }
+
+  li {
+    padding: 8px;
+    cursor: grab;
+
+    &::before {
+      content: counter(list-number);
+      counter-increment: list-number;
+      padding: 0 16px;
+      /* font-size: 12px; */
+    }
+  }
+
+  li:active {
+    cursor: grabbing;
   }
 }
